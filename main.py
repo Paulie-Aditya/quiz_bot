@@ -19,7 +19,22 @@ async def on_ready():
 
 #Default Values
 api_url = "https://opentdb.com/api.php"         #API used to fetch Questions
-duration = 10                                   #Standard duration between questions
+duration = 10                                   #Standard duration used in various places
+
+#Function to handle users joining the quiz about to start
+def participate():
+    points = {}
+    users = []
+    class Participate(nextcord.ui.View):
+        global embed
+        embed = nextcord.Embed(title= f"Quiz starting in {duration} seconds", description= "React below to join!", color= 0x0c97f6)
+
+        @nextcord.ui.button(label="Join the Quiz!",style=nextcord.ButtonStyle.blurple)
+        async def callback(self, button:nextcord.Button, interaction: nextcord.Interaction):
+            points[interaction.user.id] = 0
+            users.append(interaction.user.id)
+    view = Participate()
+    return embed, view, points
 
 
 class Options:
@@ -48,7 +63,7 @@ class Quiz:
             arg = html.unescape(arg)
             return arg
 
-        #Main function
+        #Main Function which handles Questions
         def quiz(stuff:dict):
             category = stuff['category']
             question_type = stuff['type']
@@ -59,7 +74,11 @@ class Quiz:
 
             options = list(incorrect_ans)
             options.append(correct_ans)
-            random.shuffle(options)
+
+            if len(options) == 2:
+                options = ["True","False"]
+            else:
+                random.shuffle(options)
 
             description = f'''**Your Question is:** {question}\n\n'''
 
@@ -86,7 +105,6 @@ async def start(
     interaction: nextcord.Interaction,
 
     amount: int = nextcord.SlashOption(required=True),
-
     category: Optional[str] = nextcord.SlashOption(
         name="category",
         choices=["General Knowledge", "Books", "Films", "Music", "Musicals and Theatre", "Television", "Video Games","Board Games", "Science & Nature", "Computers", "Mathematics", "Mythology", "Sports", "Geography","History", "Politics", "Art", "Celebrities", "Animals", "Vehicles", "Comics", "Gadgets", "Japanese Anime & Manga", "Cartoon & Animations"],
@@ -103,7 +121,7 @@ async def start(
     global api_url
     api_url = "https://opentdb.com/api.php"
     if amount <0 or amount>50:
-        await interaction.response.send_message("Please enter a Valid Amount. Max Questions allowed is 50")
+        await interaction.response.send_message("Please enter a Valid Amount.Max Questions allowed is 50")
         exit
     else:
         Options.amount(amount)
@@ -116,7 +134,6 @@ async def start(
         Options.difficulty(difficulty)
     else:
         pass
-    await interaction.response.send_message(f'Starting Quiz Now')
 
     #Opening up the api link, and converting into readable format (json)
     webUrl = urllib.request.urlopen(api_url)
@@ -126,14 +143,24 @@ async def start(
     questions.replace("'",'"')
     my_json = json.loads(questions)
 
+    embed,view,points = participate()
+    await interaction.response.send_message(embed = embed, view= view, delete_after=duration)
+    await asyncio.sleep(duration)
+    print(points)
+
+
 
 
     for i in my_json['results']:
 
         embed, options,correct, question_type, question= Quiz.quiz(i)
+        ans_embed = nextcord.Embed(title = f'🥁The CORRECT ANSWER IS 🥁', description= "\n\n",color= 0x10eb38)
+        ans_embed.add_field(name = f'Question: {question} \n\n**:regional_indicator_{chr(97+correct)}: {options[correct]}**' , value = " ")
 
         #View Component for Question
         class Question(nextcord.ui.View):
+            global done
+            done = duration
             def __init__(self) -> None:
                 super().__init__()
                 self.value = None
@@ -177,12 +204,29 @@ async def start(
 
             #Checks's whether the button clicked by the user is the correct option or not
             async def correct_or_not(self, interaction:nextcord.Interaction):
-                if self.value == correct:
-                    await interaction.send("Correct! ✅",ephemeral=True)
 
+                await interaction.message.edit(embed=ans_embed, view=Answer())
+                #await interaction.message.delete(delay=None)
+
+                if self.value == correct:
+                    correct_or_incorrect = f"Their Answer is Correct! 🎊 🎊"
+                    try:
+                        points[interaction.user.id] +=1
+                    except KeyError:
+                        await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
+
+                    #color = 0x03f142
                 else:
-                    await interaction.send("Incorrect! ❌", ephemeral=True)
+                    correct_or_incorrect = f"Their Answer is Incorrect! 😔"
+                    #color = 0xf1031d
+
+                await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
+
+
+
             embed.set_thumbnail(url="https://clipart-library.com/images/ATbr7A4Xc.jpg")
+
+
 
         #View component for Answer (sent after duration between questions)
         class Answer(nextcord.ui.View):
@@ -218,11 +262,36 @@ async def start(
                 async def option_3(self, button: nextcord.Button, interaction:nextcord.Interaction):
                     pass
 
-        await interaction.send(embed= embed, view=Question(), delete_after=float(duration-1))
+        await interaction.send(embed= embed, view=Question(), delete_after= duration-1)
         await asyncio.sleep(duration-1)
-        ans_embed = nextcord.Embed(title = f'🥁The CORRECT ANSWER IS 🥁', description= "\n\n",color= 0x10eb38)
-        ans_embed.add_field(name = f'Question: {question} \n\n**:regional_indicator_{chr(97+correct)}: {options[correct]}**' , value = " ")
-        await interaction.send(embed = ans_embed, view= Answer())
+        await interaction.send(embed=ans_embed, view=Answer())
+
+        #await interaction.send(embed = ans_embed, view= Answer())
+
+    leaderboard = nextcord.Embed(title= " 🏆 Leaderboard 🏆", color= 0x00ffdc)
+
+    #winners = sorted(points.keys(), key= lambda x:x[1], reverse=True)
+    points  = sorted(points.items(), key = lambda x:x[1], reverse=True)
+
+
+    i = 0
+    while (i<10):
+        emoji = ""
+        if i+1 <=3:
+            if i+1 == 1:
+                emoji = '🥇 '
+            elif i+1 == 2:
+                emoji = '🥈 '
+            elif i+1 == 3:
+                emoji = '🥉 '
+        try:
+            leaderboard.add_field(name = f'{emoji}#{i+1}', value= f"<@{points[i][0]}> with **{points[i][1]} POINTS!**\n", inline= False)
+        except:
+            break
+        i+=1
+    await interaction.send(embed=leaderboard)
+
     exit
+
 
 bot.run(config_quiz_bot.quiz_bot_token)
