@@ -195,34 +195,27 @@ async def start(
             if question_type == 'boolean':
                 @nextcord.ui.button(label = f'{options[0]}', style= style[0] ,emoji="🇦", disabled=True)
                 async def option_0(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 0:
-                        print(button.type)
+                    pass
 
                 @nextcord.ui.button(label = f'{options[1]}',  style= style[1] ,emoji="🇧",disabled=True)
                 async def option_1(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 1:
-                        print(button.type)
+                    pass
             else:
                 @nextcord.ui.button(label = f'{options[0]}', style= style[0] ,emoji="🇦", disabled=True)
                 async def option_0(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 0:
-                        print(button.type)
+                    pass
 
                 @nextcord.ui.button(label = f'{options[1]}', style= style[1] ,emoji="🇧", disabled=True)
                 async def option_1(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 1:
-                        print(button.type)
+                    pass
 
                 @nextcord.ui.button(label = f'{options[2]}', style= style[2] ,emoji= "🇨", disabled=True)
                 async def option_2(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 2:
-                        print(button.type)
+                    pass
 
                 @nextcord.ui.button(label = f'{options[3]}', style= style[3] ,emoji= "🇩", disabled=True)
                 async def option_3(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    if correct == 3:
-                        print(button.type)
-                        #button.style = nextcord.ButtonStyle.green
+                    pass
 
         await interaction.send(embed= embed, view=Question(), delete_after=float(duration-1))
         await asyncio.sleep(duration-1)
