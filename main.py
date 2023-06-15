@@ -122,7 +122,7 @@ async def start(
     api_url = "https://opentdb.com/api.php"
     if amount <0 or amount>50:
         await interaction.response.send_message("Please enter a Valid Amount.Max Questions allowed is 50")
-        exit
+        return
     else:
         Options.amount(amount)
 
