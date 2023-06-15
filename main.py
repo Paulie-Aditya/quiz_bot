@@ -23,17 +23,20 @@ duration = 10                                   #Standard duration between quest
 
 
 class Options:
+    #Adds category to api url, optional
     def category(category:str):
         api_key_dict = {"General Knowledge": 9, "Books": 10, "Films":11, "Music":12, "Musicals and Theatre":13, "Television":14, "Video Games":15,"Board Games":16, "Science & Nature":17, "Computers":18, "Mathematics":19, "Mythology":20, "Sports":21, "Geography":22,"History":23, "Politics":24, "Art":25, "Celebrities":26, "Animals":27, "Vehicles":28, "Comics":29, "Gadgets":30, "Japanese Anime & Manga":31, "Cartoon & Animations":32}
         global api_url
         api_url+="&category="+str(api_key_dict[category])
         pass
 
+    #Adds difficulty to api url, optional
     def difficulty(difficulty:str):
         global api_url
         api_url+="&difficulty="+ difficulty.lower()
         pass
 
+    #Required parameter, 
     def amount(amount:int):
         global api_url
         api_url += '?amount='+str(amount)
@@ -41,7 +44,6 @@ class Options:
 
 class Quiz:
         def replace(arg):
-
             arg = html.unescape(arg)
             return arg
 
