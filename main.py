@@ -48,7 +48,7 @@ class Quiz:
             arg = html.unescape(arg)
             return arg
 
-        #Main function to 
+        #Main function
         def quiz(stuff:dict):
             category = stuff['category']
             question_type = stuff['type']
@@ -86,6 +86,7 @@ async def start(
     interaction: nextcord.Interaction,
 
     amount: int = nextcord.SlashOption(required=True),
+
     category: Optional[str] = nextcord.SlashOption(
         name="category",
         choices=["General Knowledge", "Books", "Films", "Music", "Musicals and Theatre", "Television", "Video Games","Board Games", "Science & Nature", "Computers", "Mathematics", "Mythology", "Sports", "Geography","History", "Politics", "Art", "Celebrities", "Animals", "Vehicles", "Comics", "Gadgets", "Japanese Anime & Manga", "Cartoon & Animations"],
@@ -102,7 +103,7 @@ async def start(
     global api_url
     api_url = "https://opentdb.com/api.php"
     if amount <0 or amount>50:
-        await interaction.response.send_message("Please enter a Valid Amount.Max Questions allowed is 50")
+        await interaction.response.send_message("Please enter a Valid Amount. Max Questions allowed is 50")
         exit
     else:
         Options.amount(amount)
@@ -117,6 +118,7 @@ async def start(
         pass
     await interaction.response.send_message(f'Starting Quiz Now')
 
+    #Opening up the api link, and converting into readable format (json)
     webUrl = urllib.request.urlopen(api_url)
     questions = webUrl.read()
 
@@ -130,7 +132,7 @@ async def start(
 
         embed, options,correct, question_type, question= Quiz.quiz(i)
 
-
+        #View Component for Question
         class Question(nextcord.ui.View):
             def __init__(self) -> None:
                 super().__init__()
@@ -173,6 +175,7 @@ async def start(
                     await Question.correct_or_not(self,interaction)
                     self.stop()
 
+            #Checks's whether the button clicked by the user is the correct option or not
             async def correct_or_not(self, interaction:nextcord.Interaction):
                 if self.value == correct:
                     await interaction.send("Correct! ✅",ephemeral=True)
@@ -180,7 +183,7 @@ async def start(
                 else:
                     await interaction.send("Incorrect! ❌", ephemeral=True)
 
-
+        #View component for Answer (sent after duration between questions)
         class Answer(nextcord.ui.View):
             style = [nextcord.ButtonStyle.grey, nextcord.ButtonStyle.grey, nextcord.ButtonStyle.grey, nextcord.ButtonStyle.grey]
             style[correct] = nextcord.ButtonStyle.green
