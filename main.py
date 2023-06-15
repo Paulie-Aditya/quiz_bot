@@ -293,6 +293,8 @@ async def start(
         try:
             leaderboard.add_field(name = f'{emoji}#{i+1}', value= f"<@{points[i][0]}> with **{points[i][1]} POINTS!**\n", inline= False)
         except:
+            if i == 0:
+                leaderboard.add_field(name=f'Sadly no one joined the Quiz 😔', value="\n")
             break
         i+=1
     await interaction.send(embed=leaderboard)
