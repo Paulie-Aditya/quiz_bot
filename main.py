@@ -182,6 +182,7 @@ async def start(
 
                 else:
                     await interaction.send("Incorrect! ❌", ephemeral=True)
+            embed.set_thumbnail(url="https://clipart-library.com/images/ATbr7A4Xc.jpg")
 
         #View component for Answer (sent after duration between questions)
         class Answer(nextcord.ui.View):
