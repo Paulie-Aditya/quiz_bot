@@ -18,8 +18,8 @@ async def on_ready():
 
 
 #Default Values
-api_url = "https://opentdb.com/api.php"
-duration = 10
+api_url = "https://opentdb.com/api.php"         #API used to fetch Questions
+duration = 10                                   #Standard duration between questions
 
 
 class Options:
