@@ -104,17 +104,22 @@ class Quiz:
 async def start(
     interaction: nextcord.Interaction,
 
-    amount: int = nextcord.SlashOption(required=True),
+    amount: int = nextcord.SlashOption(
+        required=True, 
+        description="Number of Questions",
+    ),
     category: Optional[str] = nextcord.SlashOption(
         name="category",
         choices=["General Knowledge", "Books", "Films", "Music", "Musicals and Theatre", "Television", "Video Games","Board Games", "Science & Nature", "Computers", "Mathematics", "Mythology", "Sports", "Geography","History", "Politics", "Art", "Celebrities", "Animals", "Vehicles", "Comics", "Gadgets", "Japanese Anime & Manga", "Cartoon & Animations"],
         required= False,
+        description="Choose Category of the Quiz.", 
     ),
 
     difficulty: Optional[str] = nextcord.SlashOption(
         name = "difficulty",
         choices = ["Easy","Medium","Difficult"],
         required= False,
+        description="Choose Difficulty of the Quiz.", 
     ),
 
 ):
