@@ -204,24 +204,30 @@ async def start(
 
             #Checks's whether the button clicked by the user is the correct option or not
             async def correct_or_not(self, interaction:nextcord.Interaction):
-
-                await interaction.message.edit(embed=ans_embed, view=Answer())
+                
+                #await interaction.message.edit(embed=ans_embed, view=Answer())
                 #await interaction.message.delete(delay=None)
-
+                
                 if self.value == correct:
                     correct_or_incorrect = f"Their Answer is Correct! 🎊 🎊"
                     try:
                         points[interaction.user.id] +=1
+                        await interaction.message.edit(embed=ans_embed, view=Answer())
+                        await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
                     except KeyError:
                         await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
-
+                    
                     #color = 0x03f142
                 else:
                     correct_or_incorrect = f"Their Answer is Incorrect! 😔"
+                    try:
+                        points[interaction.user.id] +=0
+                        await interaction.message.edit(embed=ans_embed, view=Answer())
+                        await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
+                    except KeyError:
+                        await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
+                    
                     #color = 0xf1031d
-
-                await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
-
 
 
             embed.set_thumbnail(url="https://clipart-library.com/images/ATbr7A4Xc.jpg")
