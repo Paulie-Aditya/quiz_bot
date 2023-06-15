@@ -219,7 +219,8 @@ async def start(
 
         await interaction.send(embed= embed, view=Question(), delete_after=float(duration-1))
         await asyncio.sleep(duration-1)
-        ans_embed = nextcord.Embed(title = f'🥁The CORRECT Answer to Question: `{question}` IS 🥁', description= f'**:regional_indicator_{chr(97+correct)}: {options[correct]}**' ,color= 0x10eb38)
+        ans_embed = nextcord.Embed(title = f'🥁The CORRECT ANSWER IS 🥁', description= "\n\n",color= 0x10eb38)
+        ans_embed.add_field(name = f'Question: {question} \n\n**:regional_indicator_{chr(97+correct)}: {options[correct]}**' , value = " ")
         await interaction.send(embed = ans_embed, view= Answer())
     exit
 
