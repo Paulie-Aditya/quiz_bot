@@ -36,18 +36,19 @@ class Options:
         api_url+="&difficulty="+ difficulty.lower()
         pass
 
-    #Required parameter, 
+    #Required parameter, defines the number of questions
     def amount(amount:int):
         global api_url
         api_url += '?amount='+str(amount)
         pass
 
 class Quiz:
+        #Converts html special characters to readable content
         def replace(arg):
             arg = html.unescape(arg)
             return arg
 
-
+        #Main function to 
         def quiz(stuff:dict):
             category = stuff['category']
             question_type = stuff['type']
