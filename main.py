@@ -151,7 +151,7 @@ async def start(
     embed,view,points = participate()
     await interaction.response.send_message(embed = embed, view= view, delete_after=duration)
     await asyncio.sleep(duration)
-    print(points)
+    #print(points)
 
 
 
