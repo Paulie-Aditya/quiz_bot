@@ -1,4 +1,4 @@
-# quiz_bot
+# Quiz Bot
 Hello! I am excited to share my Project of A ‘Quiz Bot on Discord’ !
 
 Use this Bot to start a Quiz of the ‘Fastest Finger First’ type between your friends! 
