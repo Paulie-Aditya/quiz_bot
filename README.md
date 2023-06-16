@@ -8,6 +8,7 @@ Upon implementation of the ‘/start’ command, the Bot will respond with an Em
 
 At the End of the Quiz, you can see the leaderboard and brag about it amongst your friends!
 
+Use it here: https://discord.gg/qfYzANBgGA , or add it to your own server using this link: https://discord.com/api/oauth2/authorize?client_id=1070574579933777961&permissions=2147599424&scope=bot%20applications.commands
 
 P.S. Do see the video attached below to see a live demonstration of the bot.
 
