@@ -6,6 +6,7 @@ import random                       #Used to randomize choices of each question
 import asyncio                      #Used to keep a waiting time between questions, by default 10s
 import json                         #Used to convert bytes to json while reading content from opentdb.com
 import html                         #Used to convert few special characters to readable characters when reading from json, fetched from the api
+import time
 
 import config_quiz_bot
 
@@ -19,10 +20,11 @@ async def on_ready():
 
 #Default Values
 api_url = "https://opentdb.com/api.php"         #API used to fetch Questions
-duration = 15                                   #Standard duration used in various places
+duration = 30                                   #Standard duration used in various places
 
 #Function to handle users joining the quiz about to start
 def participate():
+    duration = 30
     points = {}
     users = set()
     class Participate(nextcord.ui.View):
@@ -36,6 +38,7 @@ def participate():
                 points[interaction.user.id] = 0
             else:
                 await interaction.send("You have already joined the Quiz!",ephemeral=True)
+        embed.add_field(name = "Countdown", value = f"Starting in: <t:{int(time.time() + 30)}:R>")
     view = Participate()
     return embed, view, points
 
@@ -67,7 +70,7 @@ class Quiz:
             return arg
 
         #Main Function which handles Questions
-        def quiz(stuff:dict):
+        def quiz(stuff:dict, count:int):
             category = stuff['category']
             question_type = stuff['type']
             question = stuff['question']
@@ -83,9 +86,11 @@ class Quiz:
             else:
                 random.shuffle(options)
 
-            description = f'''**Your Question is:** {question}\n\n'''
+            #description = f'''**Your Question is:** {question}\n\n'''
+            #embed = nextcord.Embed(title = f'Category: {category}',description= description,color= 0x21f9fd)
 
-            embed = nextcord.Embed(title = f'Category: {category}',description= description,color= 0x21f9fd)
+            description = f'''**Your Question is:** {question}\n\nCategory: {category}\n\n'''
+            embed = nextcord.Embed(title= f'Question No. {count}', description=description, color= 0x21f9fd)
             correct = options.index(correct_ans)
 
             for i in range(len(options)):
@@ -99,7 +104,6 @@ class Quiz:
                 embed.add_field(name = f":regional_indicator_b: {options[1]}", value= "",inline=False)
                 embed.add_field(name = f":regional_indicator_c: {options[2]}", value= "",inline=False)
                 embed.add_field(name = f":regional_indicator_d: {options[3]}", value= "",inline=False)
-
 
             return embed, options,correct, question_type, question
 
@@ -115,6 +119,9 @@ async def start(
         required=True,
         description= "Type of Quiz",
         choices= ["Fastest Finger First", "Trivia"],
+    ),
+    question_duration: Optional[int] = nextcord.SlashOption(
+        description= "Time for which a certain question will be visible before revealing the answers.",
     ),
     category: Optional[str] = nextcord.SlashOption(
         name="category",
@@ -148,6 +155,19 @@ async def start(
     else:
         pass
 
+    if question_duration:
+        if question_duration<5 or question_duration>100:
+            await interaction.send("Duration for which Question is visible should be between 5 and 100 seconds",ephemeral=True)
+            question_duration = 20
+        else:
+            question_duration = question_duration
+    else:
+        question_duration = 20
+    await interaction.response.send_message(f"Starting quiz! Each Question will be visible for **{question_duration} seconds**")
+
+
+    
+
     #Opening up the api link, and converting into readable format (json)
     webUrl = urllib.request.urlopen(api_url)
     questions = webUrl.read()
@@ -157,11 +177,15 @@ async def start(
     my_json = json.loads(questions)
 
     embed,view,points = participate()
-    await interaction.response.send_message(embed = embed, view= view, delete_after=duration)
+    await interaction.send(embed = embed, view= view, delete_after=duration)
     await asyncio.sleep(duration)
+
     
+    
+    count = 0
     for i in my_json['results']:
-        embed, options,correct, question_type, question= Quiz.quiz(i)
+        count +=1
+        embed, options,correct, question_type, question= Quiz.quiz(i, count)
         global correct_answers, incorrect_answers
         correct_answers = {}
         incorrect_answers = {}
@@ -343,13 +367,15 @@ async def start(
                 async def option_3(self, button: nextcord.Button, interaction:nextcord.Interaction):
                     pass
 
+        embed.add_field(name="Countdown",value=f"Ending in: <t:{int(time.time() + question_duration)}:R>")
         if type == "Fastest Finger First":
-            await interaction.send(embed= embed, view=Question_fff(), delete_after= duration-1)
-            await asyncio.sleep(duration-1)
+            await interaction.send(embed= embed, view=Question_fff(), delete_after= question_duration-1)
+            await asyncio.sleep(question_duration-1)
+            ans_embed.set_thumbnail(url = "https://media.tenor.com/J5a7alhbQx0AAAAC/clapping-hands.gif")
             await interaction.send(embed=ans_embed, view=Answer())
         elif type == "Trivia":
-            await interaction.send(embed = embed,view = Question_trivia(), delete_after=duration-1)
-            await asyncio.sleep(duration-1)
+            await interaction.send(embed = embed,view = Question_trivia(), delete_after=question_duration-1)
+            await asyncio.sleep(question_duration-1)
             incorrect_value = ""
             correct_value = ""
             if (len(correct_answers)+len(incorrect_answers) != 0):
@@ -369,8 +395,8 @@ async def start(
                 ans_embed.set_field_at(name="Correct",index=-2, value= "No Responses")
                 ans_embed.set_field_at(name="Incorrect",index=-1, value= "No Responses")
                 pass
+            ans_embed.set_thumbnail(url = "https://media.tenor.com/J5a7alhbQx0AAAAC/clapping-hands.gif")
             await interaction.send(embed=ans_embed, view=Answer())
-
     leaderboard = nextcord.Embed(title= " 🏆 Leaderboard 🏆", color= 0x00ffdc)
 
     #winners = sorted(points.keys(), key= lambda x:x[1], reverse=True)
