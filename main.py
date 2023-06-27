@@ -24,15 +24,15 @@ duration = 10                                   #Standard duration used in vario
 #Function to handle users joining the quiz about to start
 def participate():
     points = {}
-    users = []
+    users = set()
     class Participate(nextcord.ui.View):
         global embed
         embed = nextcord.Embed(title= f"Quiz starting in {duration} seconds", description= "React below to join!", color= 0x0c97f6)
 
         @nextcord.ui.button(label="Join the Quiz!",style=nextcord.ButtonStyle.blurple)
         async def callback(self, button:nextcord.Button, interaction: nextcord.Interaction):
+            users.add(interaction.user.id)
             points[interaction.user.id] = 0
-            users.append(interaction.user.id)
     view = Participate()
     return embed, view, points
 
