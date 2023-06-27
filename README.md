@@ -6,8 +6,10 @@ Use this Bot to start a Quiz of the ‘Fastest Finger First’ or 'Trivia' type 
 Use the ‘/start’ command and specify the number of questions you would like in the ‘amount’ argument. Optional arguments include ‘category’ and ‘difficulty’, which can be used to specify the Category and Difficulty of the Quiz respectively. 
 
 **__Updates__** <br>
-Added a new optional argument to control the time for which each question will be visible.
-Timestamps added to make it fancier.
+<ul>
+<li>Added a new optional argument to control the time for which each question will be visible. </li>
+<li>Timestamps added to make it fancier.</li>
+</ul>
 
 Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. If you click on this button, your responses and points will be counted towards the leaderboard, in case you do not click on this, you will not be able to participate in the current round of Quiz and can try again in the next round.
 
