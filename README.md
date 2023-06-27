@@ -1,7 +1,7 @@
 # Quiz Bot
 Hello! I am excited to share my Project of A ‘Quiz Bot on Discord’ !
 
-Use this Bot to start a Quiz of the ‘Fastest Finger First’ or 'Trivia' type between your friends! \n
+Use this Bot to start a Quiz of the ‘Fastest Finger First’ or 'Trivia' type between your friends! 
 
 Use the ‘/start’ command and specify the number of questions you would like in the ‘amount’ argument. Optional arguments include ‘category’ and ‘difficulty’, which can be used to specify the Category and Difficulty of the Quiz respectively. 
 
