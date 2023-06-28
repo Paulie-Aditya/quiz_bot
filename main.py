@@ -86,11 +86,9 @@ class Quiz:
             else:
                 random.shuffle(options)
 
-            #description = f'''**Your Question is:** {question}\n\n'''
-            #embed = nextcord.Embed(title = f'Category: {category}',description= description,color= 0x21f9fd)
-
-            description = f'''**Your Question is:** {question}\n\nCategory: {category}\n\n'''
-            embed = nextcord.Embed(title= f'Question No. {count}', description=description, color= 0x21f9fd)
+            
+            description = f'''**Category: {category}\n\n'''
+            embed = nextcord.Embed(title= f'Question No. {count} : {question}', description=description, color= 0x21f9fd)
             correct = options.index(correct_ans)
 
             for i in range(len(options)):
