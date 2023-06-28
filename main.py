@@ -87,7 +87,7 @@ class Quiz:
                 random.shuffle(options)
 
             
-            description = f'''**Category: {category}\n\n'''
+            description = f'''**Category: {category} **\n\n'''
             embed = nextcord.Embed(title= f'Question No. {count} : {question}', description=description, color= 0x21f9fd)
             correct = options.index(correct_ans)
 
@@ -190,6 +190,7 @@ async def start(
             
         ans_embed = nextcord.Embed(title = f'🥁The CORRECT ANSWER IS 🥁', description= "\n\n",color= 0x10eb38)
         ans_embed.add_field(name = f'Question: {question} \n\n**:regional_indicator_{chr(97+correct)}: {options[correct]}**' , value = " ", inline=False)
+        ans_embed.set_thumbnail(url = "https://media.tenor.com/J5a7alhbQx0AAAAC/clapping-hands.gif")
 
         #View Component for Question of type Fastest Finger First
         class Question_fff(nextcord.ui.View):
@@ -263,14 +264,12 @@ async def start(
 
         #View Component for Question of type Trivia
         class Question_trivia(nextcord.ui.View):
-            ans_embed.add_field(name = "Correct",value="",inline=True)
-            ans_embed.add_field(name="Incorrect", value="", inline=True)
-            
-            
             def __init__(self) -> None:
                 super().__init__()
                 self.answers = {"correct": set(),"incorrect":set()}
                 self.done = []
+                ans_embed.add_field(name = "Correct",value="",inline=True)
+                ans_embed.add_field(name="Incorrect", value="", inline=True)
 
             if question_type == 'boolean':
                 @nextcord.ui.button(label = f'{options[0]}', style=nextcord.ButtonStyle.grey, emoji="🇦")
@@ -369,7 +368,6 @@ async def start(
         if type == "Fastest Finger First":
             await interaction.send(embed= embed, view=Question_fff(), delete_after= question_duration-1)
             await asyncio.sleep(question_duration-1)
-            ans_embed.set_thumbnail(url = "https://media.tenor.com/J5a7alhbQx0AAAAC/clapping-hands.gif")
             await interaction.send(embed=ans_embed, view=Answer())
         elif type == "Trivia":
             await interaction.send(embed = embed,view = Question_trivia(), delete_after=question_duration-1)
@@ -393,7 +391,6 @@ async def start(
                 ans_embed.set_field_at(name="Correct",index=-2, value= "No Responses")
                 ans_embed.set_field_at(name="Incorrect",index=-1, value= "No Responses")
                 pass
-            ans_embed.set_thumbnail(url = "https://media.tenor.com/J5a7alhbQx0AAAAC/clapping-hands.gif")
             await interaction.send(embed=ans_embed, view=Answer())
     leaderboard = nextcord.Embed(title= " 🏆 Leaderboard 🏆", color= 0x00ffdc)
 
