@@ -308,8 +308,10 @@ async def start(
                 try:
                     points[id]
                 except KeyError:
-                    await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
-                    return 
+                    points[id] = 0
+                    pass
+                    #await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
+                    #return 
                 
                 if id not in self.done:
                     if value == correct:
