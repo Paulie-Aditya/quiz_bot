@@ -9,6 +9,7 @@ Use the ‘/start’ command and specify the number of questions you would like 
 <ul>
 <li>Added a new optional argument to control the time for which each question will be visible. </li>
 <li>Timestamps added to make it fancier.</li>
+<li>People who did not join the quiz in the beginning can still take part in the Trivia type of Quiz, but not in the Fastest Finger First Type</li>
 </ul>
 
 Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. If you click on this button, your responses and points will be counted towards the leaderboard, in case you do not click on this, you will not be able to participate in the current round of Quiz and can try again in the next round.
