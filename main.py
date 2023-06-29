@@ -397,7 +397,7 @@ async def start(
     leaderboard = nextcord.Embed(title= " 🏆 Leaderboard 🏆", color= 0x00ffdc)
 
     #winners = sorted(points.keys(), key= lambda x:x[1], reverse=True)
-    points  = sorted(points.items(), key = lambda x:x[1], reverse=True)
+    points_  = sorted(points.items(), key = lambda x:x[1], reverse=True)
 
 
     i = 0
@@ -411,7 +411,7 @@ async def start(
             elif i+1 == 3:
                 emoji = '🥉 '
         try:
-            leaderboard.add_field(name = f'{emoji}#{i+1}', value= f"<@{points[i][0]}> with **{points[i][1]} POINTS!**\n", inline= False)
+            leaderboard.add_field(name = f'{emoji}#{i+1}', value= f"<@{points_[i][0]}> with **{points_[i][1]} POINTS!**\n", inline= False)
         except:
             if i == 0:
                 leaderboard.add_field(name=f'Sadly no one joined the Quiz 😔', value="\n")
