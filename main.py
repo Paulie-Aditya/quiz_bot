@@ -196,71 +196,55 @@ async def start(
         class Question_fff(nextcord.ui.View):
             def __init__(self) -> None:
                 super().__init__()
-                self.value = None
+                self.done = []
 
             if question_type == 'boolean':
                 @nextcord.ui.button(label = f'{options[0]}', style=nextcord.ButtonStyle.grey, emoji="🇦")
                 async def option_0(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 0
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,0)
 
                 @nextcord.ui.button(label = f'{options[1]}', style=nextcord.ButtonStyle.grey, emoji="🇧")
                 async def option_1(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 1
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,1)
+                    
             else:
                 @nextcord.ui.button(label = f'{options[0]}', style=nextcord.ButtonStyle.grey, emoji="🇦")
                 async def option_0(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 0
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,0)
 
                 @nextcord.ui.button(label = f'{options[1]}', style=nextcord.ButtonStyle.grey, emoji="🇧")
                 async def option_1(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 1
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,1)
 
                 @nextcord.ui.button(label = f'{options[2]}', style=nextcord.ButtonStyle.grey, emoji= "🇨")
                 async def option_2(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 2
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,2)
 
                 @nextcord.ui.button(label = f'{options[3]}', style=nextcord.ButtonStyle.grey, emoji= "🇩")
                 async def option_3(self, button: nextcord.Button, interaction:nextcord.Interaction):
-                    self.value = 3
-                    await Question_fff.correct_or_not(self,interaction)
-                    self.stop()
+                    await Question_fff.correct_or_not(self,interaction,3)
 
             #Checks's whether the button clicked by the user is the correct option or not
-            async def correct_or_not(self, interaction:nextcord.Interaction):
-                    
-                if self.value == correct:
-                    correct_or_incorrect = f"Their Answer is Correct! 🎊 🎊"
-                    try:
-                        points[interaction.user.id] +=1
+            async def correct_or_not(self, interaction:nextcord.Interaction, value:int):
+
+                try:
+                    points[interaction.user.id]
+                except:
+                    points[interaction.user.id] = 0
+
+                if interaction.user.id not in self.done:
+                    if value == correct:
+                        points[interaction.user.id] += 1
+                        self.stop()
+                        await interaction.send(f'{interaction.user.mention} got the Correct Answer First! 🎊 🎊')
                         await interaction.message.edit(embed=ans_embed, view=Answer())
-                        await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
-                    except KeyError:
-                        await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
-                        
+                    else:
+                        await interaction.send(f'{interaction.user.mention} Incorrect! 😔', ephemeral=True)
+                    self.done.append(interaction.user.id)
                 else:
-                    correct_or_incorrect = f"Their Answer is Incorrect! 😔"
-                    try:
-                        points[interaction.user.id] +=0
-                        await interaction.message.edit(embed=ans_embed, view=Answer())
-                        await interaction.send(f'{interaction.user.mention} answered First! {correct_or_incorrect}')
-                    except KeyError:
-                        await interaction.send(f'{interaction.user.mention}, You have not joined the Quiz, please wait for the next round.', ephemeral=True)
-                        
+                    await interaction.send('You have already responded!', ephemeral=True)
 
-
-
-                embed.set_thumbnail(url="https://clipart-library.com/images/ATbr7A4Xc.jpg")
-
+            embed.set_thumbnail(url="https://clipart-library.com/images/ATbr7A4Xc.jpg")
 
         #View Component for Question of type Trivia
         class Question_trivia(nextcord.ui.View):
