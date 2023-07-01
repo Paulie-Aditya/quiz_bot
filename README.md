@@ -3,9 +3,10 @@ Hello! I am excited to share my Project of A ‘Quiz Bot on Discord’ !
 
 Use this Bot to start a Quiz of the ‘Fastest Finger First’ or 'Trivia' type between your friends! 
 
-Use the ‘/start’ command and specify the number of questions you would like in the ‘amount’ argument. Optional arguments include ‘category’ and ‘difficulty’, which can be used to specify the Category and Difficulty of the Quiz respectively. 
+Use the ‘/start’ command and specify the number of questions you would like in the ‘amount’ argument. <br>
+Optional arguments include ‘category’ and ‘difficulty’, which can be used to specify the Category and Difficulty of the Quiz respectively. 
 
-**__Updates__** <br>
+## **__Updates__** <br>
 <ul>
 <li>Added a new optional argument to control the time for which each question will be visible. </li>
 <li>Timestamps added to make it fancier.</li>
@@ -13,12 +14,12 @@ Use the ‘/start’ command and specify the number of questions you would like 
 <li>Fastest Finger Type Quiz will now end only when someone answers correctly, or the time ends</li>
 </ul>
 
-Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. If you click on this button, your responses and points will be counted towards the leaderboard, in case you do not click on this, you will not be able to participate in the current round of Quiz and can try again in the next round.
+Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. Click on this button to come up on the leaderboard and participate in the Quiz!
 
 At the End of the Quiz, you can see the leaderboard and brag about it amongst your friends!
 
-Use it here: https://discord.gg/qfYzANBgGA , 
-or add it to your own server using this link: https://discord.com/api/oauth2/authorize?client_id=1070574579933777961&permissions=2147599424&scope=bot%20applications.commands
+Use it here: https://discord.gg/qfYzANBgGA , <br> 
+Or add it to your own server using this link: https://discord.com/api/oauth2/authorize?client_id=1070574579933777961&permissions=2147599424&scope=bot%20applications.commands
 
 
 
