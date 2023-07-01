@@ -6,6 +6,10 @@ Use this Bot to start a Quiz of the ‘Fastest Finger First’ or 'Trivia' type 
 Use the ‘/start’ command and specify the number of questions you would like in the ‘amount’ argument. <br>
 Optional arguments include ‘category’ and ‘difficulty’, which can be used to specify the Category and Difficulty of the Quiz respectively. 
 
+Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. Click on this button to come up on the leaderboard and participate in the Quiz!
+
+At the End of the Quiz, you can see the leaderboard and brag about it amongst your friends!
+
 ## **__Updates__** <br>
 <ul>
 <li>Added a new optional argument to control the time for which each question will be visible. </li>
@@ -14,9 +18,7 @@ Optional arguments include ‘category’ and ‘difficulty’, which can be use
 <li>Fastest Finger Type Quiz will now end only when someone answers correctly, or the time ends</li>
 </ul>
 
-Upon implementation of the ‘/start’ command, the Bot will respond with an Embed with a Button asking people to join. Click on this button to come up on the leaderboard and participate in the Quiz!
 
-At the End of the Quiz, you can see the leaderboard and brag about it amongst your friends!
 
 Use it here: https://discord.gg/qfYzANBgGA , <br> 
 Or add it to your own server using this link: https://discord.com/api/oauth2/authorize?client_id=1070574579933777961&permissions=2147599424&scope=bot%20applications.commands
