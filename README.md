@@ -18,6 +18,8 @@ At the End of the Quiz, you can see the leaderboard and brag about it amongst yo
 <li>Fastest Finger Type Quiz will now end only when someone answers correctly, or the time ends</li>
 </ul>
 
+<br></br>
+
 
 
 Use it here: https://discord.gg/qfYzANBgGA , <br> 
